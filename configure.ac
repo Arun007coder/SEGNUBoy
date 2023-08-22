@@ -26,7 +26,7 @@ AC_ARG_WITH(sdl,     [  --with-sdl                      build SDL interface], []
 AC_ARG_WITH(sdl2,    [  --with-sdl2                     build SDL2 interface], [], [with_sdl2=yes])
 AC_ARG_WITH(sound,   [  --with-sound=no,oss,sdl,ao      select sound interface], [], [with_sound=yes])
 AC_ARG_WITH(x11,     [  --with-x                        build x11 interface], [], [with_x11=auto])
-
+AC_ARG_WITH(seos4,   [  --with-seos4                    build SectorOS-RW4 interface], [], [with_seos4=yes])
 
 SOUND=""
 JOY=""
@@ -146,6 +146,7 @@ test "$with_fb" = "no" || TARGETS="$TARGETS fbgnuboy"
 test "$with_svgalib" = "no" || TARGETS="$TARGETS sgnuboy"
 test "$with_sdl" = "no" || TARGETS="$TARGETS sdlgnuboy"
 test "$with_sdl2" = "no" || TARGETS="$TARGETS sdl2gnuboy"
+test "$with_seos4" = "no" || TARGETS="$TARGETS segnuboy"
 
 
 

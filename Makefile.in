@@ -37,6 +37,10 @@ SDL2_LIBS = @SDL2_LIBS@
 X11_OBJS = sys/x11/xlib.o sys/x11/keymap.o @JOY@ @SOUND@
 X11_LIBS = @XLIBS@ -lX11 -lXext
 
+SEOS_OBJS = sys/pc/keymap.o sys/sectoros/sectoros.o $(ASM_OBJS) sys/dummy/nosound.o sys/dummy/nojoy.o
+SEOS_INCS = -I~/sysroot/usr/local/include -I./sys/sectoros
+SEOS_CFLAGS=
+
 all: $(TARGETS)
 
 include Rules
@@ -59,8 +63,15 @@ sys/sdl/sdl.o: sys/sdl/sdl.c
 sys/sdl/keymap.o: sys/sdl/keymap.c
 	$(MYCC) $(SDL_CFLAGS) -c $< -o $@
 
+sys/sectoros/sectoros.o: sys/sectoros/sectoros.c
+	$(MYCC) $(SEOS_CFLAGS) -c $< -o $@
+
 xgnuboy: $(OBJS) $(SYS_OBJS) $(X11_OBJS)
 	$(LD) $(OBJS) $(SYS_OBJS) $(X11_OBJS) -o $@ $(X11_LIBS) $(LDFLAGS)
+
+segnuboy: $(OBJS) $(SEOS_OBJS)
+	$(LD) $(LDFLAGS) $(OBJS) $(SEOS_OBJS) -o $@ -lsegui
+
 
 joytest: joytest.o @JOY@
 	$(LD) $^ -o $@ $(LDFLAGS)

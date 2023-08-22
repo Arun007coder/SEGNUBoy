@@ -6,6 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/stat.h>
 #include <stdarg.h>
 #include <ctype.h>
 #include <time.h>
@@ -117,21 +118,16 @@ static void initmem(void *mem, int size)
 
 static byte *loadfile(FILE *f, int *len)
 {
-	int c, l = 0, p = 0;
-	byte *d = 0, buf[4096];
+	fseek(f, 0, SEEK_END);
+	int _sz = ftell(f);
+	fseek(f, 0, SEEK_SET);
 
-	for(;;)
-	{
-		c = fread(buf, 1, sizeof buf, f);
-		if (c <= 0) break;
-		l += c;
-		d = realloc(d, l);
-		if (!d) return 0;
-		memcpy(d+p, buf, c);
-		p += c;
-	}
-	*len = l;
-	return d;
+	*len = _sz;
+
+	uint8_t* buf = malloc(_sz);
+	memset(buf, 0, _sz);
+	fread(buf, _sz, 1, f);
+	return buf;
 }
 
 static byte *inf_buf;
@@ -297,7 +293,8 @@ static byte *decompress(byte *data, int *len)
 	return data;
 }
 
-static FILE* rom_loadfile(char *fn, byte** data, int *len) {
+static FILE* rom_loadfile(char *fn, byte** data, int *len)
+{
 	FILE *f;
 	if (strcmp(fn, "-")) f = fopen(fn, "rb");
 	else f = stdin;
@@ -306,6 +303,12 @@ static FILE* rom_loadfile(char *fn, byte** data, int *len) {
 		loader_set_error("cannot open rom file: %s\n", fn);
 		return f;
 	}
+	int _sz = 0;
+	fseek(f, 0, SEEK_END);
+	_sz = ftell(f);
+	fseek(f, 0, SEEK_SET);
+	if(_sz > 1024)
+		*data = realloc(*data, _sz);
 	*data = loadfile(f, len);
 	if (!*data) {
 		fclose(f);
@@ -353,6 +356,7 @@ int rom_load()
 {
 	FILE *f;
 	byte c, *data, *header;
+	data = malloc(1024);
 	int len = 0, rlen;
 	f = rom_loadfile(romfile, &data, &len);
 	if(!f) return -1;

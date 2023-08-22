@@ -795,7 +795,8 @@ static void updatepalette(int i)
 	r = (r >> fb.cc[0].r) << fb.cc[0].l;
 	g = (g >> fb.cc[1].r) << fb.cc[1].l;
 	b = (b >> fb.cc[2].r) << fb.cc[2].l;
-	c = r|g|b;
+	int alpha = (0xFF >> fb.cc[3].r) << fb.cc[3].l;
+	c = 0xFF000000|r|g|b;
 
 	switch (fb.pelsize)
 	{

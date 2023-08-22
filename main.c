@@ -31,7 +31,7 @@ static char *defaultconfig[] =
 {
 	"bootrom_dmg \"\"",
 	"bootrom_gbc \"\"",
-	"bind esc quit",
+	"bind esc menu",
 	"bind up +up",
 	"bind down +down",
 	"bind left +left",
@@ -61,8 +61,8 @@ static char *defaultconfig[] =
 	"bind 0 \"set saveslot 0\"",
 	"bind ins savestate",
 	"bind del loadstate",
-	"set romdir .",
-	"source gnuboy.rc",
+	"set romdir /",
+	"source /gnuboy.rc",
 	NULL
 };
 
@@ -324,7 +324,7 @@ int main(int argc, char *argv[])
 		else if (!strcmp(argv[i], "--source"))
 		{
 			if (i + 1 >= argc) die("missing argument to source\n");
-			cmd = malloc(strlen(argv[i+1]) + 8);
+			cmd = malloc(strlen(argv[i+1]) + 6);
 			sprintf(cmd, "source %s", argv[++i]);
 			rc_command(cmd);
 			free(cmd);

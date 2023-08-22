@@ -141,6 +141,10 @@ void vid_init()
 	fb.cc[1].l = format->Gshift;
 	fb.cc[2].r = format->Bloss;
 	fb.cc[2].l = format->Bshift;
+	fb.cc[3].r = format->Aloss;
+	fb.cc[3].l = format->Ashift;
+
+	printf("pelsize=%d, bpp=%d;\n\tfb.cc[0].r=%d;\n\tfb.cc[0].l=%d;\n\tfb.cc[1].r=%d;\n\tfb.cc[1].l=%d;\n\tfb.cc[2].r=%d;\n\tfb.cc[2].l=%d;\n\tfb.cc[3].r=%d;\n\tfb.cc[3].l=%d;\n", fb.pelsize, vmode[2], fb.cc[0].r, fb.cc[0].l, fb.cc[1].r, fb.cc[1].l, fb.cc[2].r, fb.cc[2].l, fb.cc[3].r, fb.cc[3].l);
 
 	SDL_UnlockTexture(texture);
 	SDL_FreeFormat(format);

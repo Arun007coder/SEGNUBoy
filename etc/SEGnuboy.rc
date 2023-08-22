@@ -1,0 +1,9 @@
+bind d +a
+bind s +b
+bind up +up
+bind down +down
+bind left +left
+bind right +right
+bind z +start
+bind x +select
+set scale 2
